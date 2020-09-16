@@ -1,0 +1,67 @@
+//Intercala en orden los elementos de dos listas
+nodo* intercalarListasEnOrden(nodo* lista1, nodo* lista2)
+{
+    nodo* listaFinal; //La lista donde intercalaremos todo
+
+    //Si alguna de las 2 no tiene contenido vemos cual es la que si tiene y la retornamos
+    if((lista1 != NULL) && (lista2 == NULL))
+    {
+        listaFinal = lista1;
+    }
+    else if((lista2 != NULL) && (lista1 == NULL))
+    {
+        listaFinal = lista2;
+    }
+
+
+
+    //Verificamos si las 2 listas tienen contenido
+    if((lista1 != NULL) && (lista2 != NULL))
+    {
+        nodo* listaAux;
+        //Nos fijamos cual es el menor asi decidimos cual sera la lista
+        if(lista1->valor <= lista2->valor)
+        {
+            listaFinal = lista1;
+            listaAux = lista2;
+        }
+        else
+        {
+            listaFinal = lista2;
+            listaAux = lista1;
+        }
+        nodo* seguidoraFinal = listaFinal;
+        nodo* seguidoraAux = listaAux;
+        //Seguidoras para ir un paso adelante de nuestras listas auxiliares
+        seguidoraFinal = seguidoraFinal->siguiente;
+        seguidoraAux = seguidoraAux->siguiente;
+        nodo* auxFinal = listaFinal;//auxFinal es para no modificar la lista que vamos a retornar
+
+        //En cada vuelta verificamos que ambas listas sigan teniendo contenido
+        //Si no lo tienen ya terminamos de intercalar, y como ya estan las conecciones de cada lista individual
+        //Se hace un ultimo enganche y ya terminamos
+        while((auxFinal != NULL) && (listaAux != NULL))
+        {
+            if((seguidoraFinal != NULL) && (seguidoraFinal->valor < listaAux->valor))
+            {
+                auxFinal->siguiente = seguidoraFinal;
+                auxFinal = seguidoraFinal;
+                if(seguidoraFinal != NULL)
+                    seguidoraFinal = seguidoraFinal->siguiente;
+            }
+            else
+            {
+                auxFinal->siguiente = listaAux;
+                auxFinal = listaAux;
+                listaAux = seguidoraAux;
+                if(seguidoraAux != NULL)
+                    seguidoraAux = seguidoraAux->siguiente;
+            }
+        }
+        if(listaAux == NULL)
+            auxFinal->siguiente = seguidoraFinal;
+
+
+    }
+    return listaFinal;
+}
